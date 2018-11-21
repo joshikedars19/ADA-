@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+clock CPU1Clock, CPU2Clock, GlobalClock;
+
+int NumOfJobs = 9 ;
+int JobExecutionCounter = 0;
+
+int CPU1_C ;
+chan CPU1_use, CPU1_done ;
+
+int CPU2_C ;
+chan CPU2_use, CPU2_done ;
+
+int StartFlag = 1 ;
+
+
+
+
+
+
+int JobAFlag = 0 ;
+int JobBFlag = 0 ;
+int JobCFlag = 0 ;  
+int JobDFlag = 0 ; 
+int JobEFlag = 0 ; 
+int JobFFlag = 0 ;
+int JobGFlag = 0 ;
+int JobHFlag = 0 ;
+int JobIFlag = 0 ;</declaration>
+	<template>
+		<name x="5" y="5">CPU</name>
+		<parameter>chan &amp;use, chan &amp;done, int &amp;C, clock &amp;myClock</parameter>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="102" y="-170">
+			<name x="42" y="-178">InUse</name>
+			<label kind="invariant" x="127" y="-178">myClock &lt;= C</label>
+		</location>
+		<location id="id1" x="-178" y="-170">
+			<name x="-229" y="-178">Idle</name>
+		</location>
+		<init ref="id1"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-85" y="-119">myClock == C</label>
+			<label kind="synchronisation" x="-76" y="-85">done!</label>
+			<nail x="102" y="-93"/>
+			<nail x="-178" y="-93"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-76" y="-255">use?</label>
+			<label kind="assignment" x="-85" y="-238">myClock := 0</label>
+			<nail x="-179" y="-238"/>
+			<nail x="101" y="-238"/>
+		</transition>
+	</template>
+	<template>
+		<name>Job</name>
+		<parameter>int C1, int C2, int &amp;myFlag, int &amp;wait1Flag,int &amp;wait2Flag</parameter>
+		<location id="id2" x="-145" y="-221">
+		</location>
+		<location id="id3" x="-153" y="-467">
+		</location>
+		<location id="id4" x="-502" y="-340">
+		</location>
+		<location id="id5" x="152" y="-348">
+			<name x="169" y="-365">JobFinised</name>
+		</location>
+		<location id="id6" x="-502" y="-340">
+			<name x="-485" y="-357">JobInit</name>
+		</location>
+		<init ref="id6"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-69" y="-246">CPU2_done?</label>
+			<label kind="assignment" x="-103" y="-212">JobExecutionCounter++, myFlag := 1</label>
+			<nail x="-136" y="-221"/>
+			<nail x="16" y="-221"/>
+			<nail x="67" y="-221"/>
+			<nail x="127" y="-306"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id5"/>
+			<label kind="synchronisation" x="-77" y="-459">CPU1_done?</label>
+			<label kind="assignment" x="-119" y="-493">JobExecutionCounter++,  myFlag := 1</label>
+			<nail x="16" y="-467"/>
+			<nail x="84" y="-467"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-748" y="-280">wait1Flag == 1 &amp;&amp; wait2Flag == 1</label>
+			<label kind="synchronisation" x="-417" y="-238">CPU2_use!</label>
+			<label kind="assignment" x="-272" y="-238">CPU2_C := C2</label>
+			<nail x="-502" y="-221"/>
+			<nail x="-204" y="-221"/>
+			<nail x="-187" y="-221"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id3"/>
+			<label kind="guard" x="-748" y="-408">wait1Flag == 1 &amp;&amp; wait2Flag == 1</label>
+			<label kind="synchronisation" x="-425" y="-467">CPU1_use!</label>
+			<label kind="assignment" x="-306" y="-467">CPU1_C := C1</label>
+			<nail x="-502" y="-467"/>
+			<nail x="-281" y="-467"/>
+			<nail x="-187" y="-467"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+CPU1 = CPU(CPU1_use, CPU1_done, CPU1_C, CPU1Clock) ;
+CPU2 = CPU(CPU2_use, CPU2_done, CPU2_C, CPU2Clock) ;
+
+JobA = Job(1, 2, JobAFlag, StartFlag, StartFlag) ;
+JobB = Job(4, 2, JobBFlag, StartFlag, StartFlag ) ;
+JobC = Job(5, 5, JobCFlag, JobAFlag, StartFlag  ) ;
+JobD = Job(2, 4, JobDFlag, JobAFlag, JobBFlag ) ;
+JobE = Job(3, 7, JobEFlag, StartFlag, JobBFlag ) ;
+JobF = Job(7, 8, JobFFlag, StartFlag, JobCFlag) ;
+JobG = Job(1, 1, JobGFlag, JobCFlag, JobDFlag) ;
+JobH = Job(5, 2, JobHFlag, JobGFlag, JobEFlag) ;
+JobI = Job(3, 1, JobIFlag, JobEFlag, StartFlag) ; 
+// List one or more processes to be composed into a system.
+  system JobA, JobB, JobC, JobD, JobE, JobF, JobG, JobH, JobI, CPU1, CPU2 ;  </system>
+	<queries>
+		<query>
+			<formula>E&lt;&gt; JobExecutionCounter == NumOfJobs and GlobalClock &lt;= 14
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>

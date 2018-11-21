@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+int i = 0;</declaration>
+	<template>
+		<name x="5" y="5">T1</name>
+		<parameter>int &amp;i</parameter>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="0" y="119">
+		</location>
+		<location id="id1" x="0" y="0">
+		</location>
+		<init ref="id1"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="assignment" x="29" y="89">i--</label>
+			<nail x="59" y="59"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="0" y="25">i&gt;0</label>
+		</transition>
+	</template>
+	<template>
+		<name>T2</name>
+		<parameter>int &amp;i</parameter>
+		<location id="id2" x="0" y="119">
+		</location>
+		<location id="id3" x="0" y="0">
+		</location>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id3"/>
+			<label kind="assignment" x="29" y="85">i:=0</label>
+			<nail x="59" y="51"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+			<label kind="guard" x="0" y="25">i==100</label>
+		</transition>
+	</template>
+	<template>
+		<name>T3</name>
+		<parameter>int &amp;i</parameter>
+		<location id="id4" x="0" y="119">
+		</location>
+		<location id="id5" x="0" y="0">
+		</location>
+		<init ref="id5"/>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id5"/>
+			<label kind="assignment" x="29" y="85">i++</label>
+			<nail x="59" y="51"/>
+		</transition>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id4"/>
+			<label kind="guard" x="0" y="25">i&lt;100</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+P1 = T1(i);
+P2 = T2(i);
+P3 = T3(i);
+// List one or more processes to be composed into a system.
+system P1,P2,P3;
+    </system>
+	<queries>
+		<query>
+			<formula>E&lt;&gt;Process.
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>

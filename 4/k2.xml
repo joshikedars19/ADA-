@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+
+chan putData , producerFinish ;
+
+
+chan getData, bufferFinish ;
+
+
+</declaration>
+	<template>
+		<name x="5" y="5">ProducerTemplate</name>
+		<parameter>clock &amp;ProducerClock</parameter>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="0" y="187">
+			<name x="-51" y="204">ProducerDone</name>
+		</location>
+		<location id="id1" x="425" y="0">
+			<name x="442" y="-8">PutDataAction</name>
+		</location>
+		<location id="id2" x="204" y="0">
+			<name x="136" y="-42">ProducerRandomWait</name>
+		</location>
+		<location id="id3" x="0" y="0">
+			<name x="-119" y="-8">ProducerStart</name>
+			<label kind="invariant" x="-153" y="8">ProducerClock &lt;= 3</label>
+		</location>
+		<init ref="id3"/>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id3"/>
+			<label kind="assignment" x="161" y="-170">ProducerClock := 0</label>
+			<nail x="425" y="-144"/>
+			<nail x="0" y="-144"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="8" y="93">producerFinish?</label>
+		</transition>
+		<transition>
+			<source ref="id2"/>
+			<target ref="id1"/>
+			<label kind="synchronisation" x="272" y="0">putData!</label>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+		</transition>
+	</template>
+	<template>
+		<name>BufferTemplate</name>
+		<parameter>int &amp;item</parameter>
+		<location id="id4" x="-76" y="195">
+			<name x="-110" y="212">BufferDone</name>
+		</location>
+		<location id="id5" x="272" y="8">
+			<name x="289" y="0">DataPutAction</name>
+		</location>
+		<location id="id6" x="-425" y="8">
+			<name x="-544" y="0">DataGetAction</name>
+		</location>
+		<location id="id7" x="-76" y="8">
+			<name x="-161" y="17">BufferStart</name>
+		</location>
+		<init ref="id7"/>
+		<transition>
+			<source ref="id5"/>
+			<target ref="id7"/>
+			<nail x="272" y="-85"/>
+			<nail x="-8" y="-85"/>
+		</transition>
+		<transition>
+			<source ref="id6"/>
+			<target ref="id7"/>
+			<nail x="-425" y="-85"/>
+			<nail x="-144" y="-85"/>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id4"/>
+			<label kind="synchronisation" x="-76" y="110">bufferFinish?</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id6"/>
+			<label kind="guard" x="-187" y="-8">item &gt; 0</label>
+			<label kind="synchronisation" x="-297" y="-8">getData!</label>
+			<label kind="assignment" x="-391" y="-8">item--</label>
+		</transition>
+		<transition>
+			<source ref="id7"/>
+			<target ref="id5"/>
+			<label kind="guard" x="-42" y="-8">item &lt; 3</label>
+			<label kind="synchronisation" x="85" y="-8">putData?</label>
+			<label kind="assignment" x="204" y="-8">item++</label>
+		</transition>
+	</template>
+	<template>
+		<name>ConsumerTemplate</name>
+		<parameter>int &amp;consumerSum, clock &amp;ConsumerClock</parameter>
+		<location id="id8" x="-399" y="42">
+			<name x="-450" y="59">ConsumerDone</name>
+		</location>
+		<location id="id9" x="-178" y="42">
+			<name x="-246" y="59">FinishedProducer</name>
+		</location>
+		<location id="id10" x="76" y="-161">
+			<name x="93" y="-169">GetDataAction</name>
+		</location>
+		<location id="id11" x="-748" y="-161">
+			<name x="-867" y="-169">ConsumerStart</name>
+			<label kind="invariant" x="-901" y="-153">ConsumerClock &lt;= 3</label>
+		</location>
+		<location id="id12" x="76" y="42">
+			<name x="25" y="59">FinishedBuffer</name>
+		</location>
+		<location id="id13" x="-544" y="-161">
+			<name x="-612" y="-203">ConsumerRandomWait</name>
+		</location>
+		<init ref="id11"/>
+		<transition>
+			<source ref="id9"/>
+			<target ref="id8"/>
+		</transition>
+		<transition>
+			<source ref="id12"/>
+			<target ref="id9"/>
+			<label kind="synchronisation" x="-102" y="25">producerFinish!</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id12"/>
+			<label kind="guard" x="85" y="-127">consumerSum &gt;= 100</label>
+			<label kind="synchronisation" x="85" y="-42">bufferFinish!</label>
+		</transition>
+		<transition>
+			<source ref="id10"/>
+			<target ref="id11"/>
+			<label kind="guard" x="85" y="-255">consumerSum &lt; 100</label>
+			<label kind="assignment" x="-442" y="-331">ConsumerClock := 0</label>
+			<nail x="76" y="-305"/>
+			<nail x="-748" y="-305"/>
+		</transition>
+		<transition>
+			<source ref="id13"/>
+			<target ref="id10"/>
+			<label kind="guard" x="-510" y="-161">consumerSum &lt; 100</label>
+			<label kind="synchronisation" x="-332" y="-161">getData?</label>
+			<label kind="assignment" x="-229" y="-161">consumerSum := consumerSum + 20</label>
+		</transition>
+		<transition>
+			<source ref="id11"/>
+			<target ref="id13"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+
+clock ProducerClock , ConsumerClock ;
+int summer ;
+int item ;
+Producer = ProducerTemplate(ProducerClock) ;
+Consumer = ConsumerTemplate(summer, ConsumerClock) ;
+Buffer = BufferTemplate(item) ;
+// List one or more processes to be composed into a system.
+system Producer, Buffer, Consumer;
+    </system>
+	<queries>
+		<query>
+			<formula>A[] deadlock imply (Producer.ProducerDone and Consumer.ConsumerDone and Buffer.BufferDone)
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>

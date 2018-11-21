@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+clock CPU1Clock, CPU2Clock, GlobalClock;
+
+int NumOfJobs = 5 ;
+int JobExecutionCounter = 0;
+
+int CPU1_C ;
+chan CPU1_use, CPU1_done ;
+
+int CPU2_C ;
+chan CPU2_use, CPU2_done ;</declaration>
+	<template>
+		<name x="5" y="5">CPU</name>
+		<parameter>chan &amp;use, chan &amp;done, int &amp;C, clock &amp;myClock</parameter>
+		<declaration>// Place local declarations here.</declaration>
+		<location id="id0" x="102" y="-170">
+			<name x="42" y="-178">InUse</name>
+			<label kind="invariant" x="127" y="-178">myClock &lt;= C</label>
+		</location>
+		<location id="id1" x="-178" y="-170">
+			<name x="-229" y="-178">Idle</name>
+		</location>
+		<init ref="id1"/>
+		<transition>
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="guard" x="-85" y="-119">myClock == C</label>
+			<label kind="synchronisation" x="-76" y="-85">done!</label>
+			<nail x="102" y="-93"/>
+			<nail x="-178" y="-93"/>
+		</transition>
+		<transition>
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="synchronisation" x="-76" y="-255">use?</label>
+			<label kind="assignment" x="-85" y="-238">myClock := 0</label>
+			<nail x="-179" y="-238"/>
+			<nail x="101" y="-238"/>
+		</transition>
+	</template>
+	<template>
+		<name>Job</name>
+		<parameter>int C1, int C2</parameter>
+		<location id="id2" x="-306" y="-85">
+			<name x="-316" y="-119">JobFinised</name>
+		</location>
+		<location id="id3" x="25" y="-85">
+			<name x="59" y="-102">JobExecution</name>
+		</location>
+		<location id="id4" x="-382" y="-85">
+			<name x="-459" y="-93">JobStart</name>
+		</location>
+		<init ref="id4"/>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-170" y="-59">CPU2_done?</label>
+			<label kind="assignment" x="-212" y="-42">JobExecutionCounter++</label>
+			<nail x="-9" y="-42"/>
+			<nail x="-263" y="-42"/>
+			<nail x="-289" y="-68"/>
+		</transition>
+		<transition>
+			<source ref="id3"/>
+			<target ref="id2"/>
+			<label kind="synchronisation" x="-178" y="-136">CPU1_done?</label>
+			<label kind="assignment" x="-212" y="-153">JobExecutionCounter++</label>
+			<nail x="-9" y="-136"/>
+			<nail x="-263" y="-136"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-103" y="42">CPU2_use!</label>
+			<label kind="assignment" x="-111" y="17">CPU2_C := C2</label>
+			<nail x="-382" y="34"/>
+			<nail x="25" y="34"/>
+		</transition>
+		<transition>
+			<source ref="id4"/>
+			<target ref="id3"/>
+			<label kind="synchronisation" x="-144" y="-229">CPU1_use!</label>
+			<label kind="assignment" x="-144" y="-212">CPU1_C := C1</label>
+			<nail x="-382" y="-212"/>
+			<nail x="25" y="-212"/>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+CPU1 = CPU(CPU1_use, CPU1_done, CPU1_C, CPU1Clock) ;
+CPU2 = CPU(CPU2_use, CPU2_done, CPU2_C, CPU2Clock) ;
+JobA = Job(3, 4) ;
+JobB = Job(3, 2) ;
+JobC = Job(6, 5) ;
+JobD = Job(3, 3) ;
+JobE = Job(2, 1) ;
+// List one or more processes to be composed into a system.
+system JobA, JobB, JobC, JobD,JobE, CPU1, CPU2 ;
+    </system>
+	<queries>
+		<query>
+			<formula>E&lt;&gt; JobExecutionCounter == 5 and GlobalClock &lt;= 8
+			</formula>
+			<comment>
+			</comment>
+		</query>
+	</queries>
+</nta>

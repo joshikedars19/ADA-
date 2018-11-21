@@ -1,0 +1,2 @@
+input_light.adb:33:01: begin block not allowed in package spec
+input_light.adb:51:01: "end Bounded_Buffer_Package;" expected

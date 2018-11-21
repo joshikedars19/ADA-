@@ -1,0 +1,1088 @@
+\documentclass[oneside,a4paper]{article}
+
+% ========== Preamble (packages, definitions etc.) ==========
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[svgnames]{xcolor}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{csquotes}
+\usepackage{listings}
+\usepackage{lmodern}    %Indent First Paragraph package indentfirst
+\usepackage{indentfirst}
+\usepackage{url}
+%\usepackage{graphicx}    
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{float}
+\usepackage[colorlinks=true, linkcolor=Black, urlcolor=Red]{hyperref}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\parskip}{\baselineskip}
+
+\newcounter{questionnum} \setcounter{questionnum}{0}
+\newcommand{\question}[1]{%
+  \refstepcounter{questionnum}%
+  \paragraph{Question~\arabic{questionnum}:}{\emph{#1}}}
+
+\newcommand\filltoend{\leavevmode{\unskip
+  \leaders\hrule height.5ex depth\dimexpr-.5ex+0.4pt\hfill\hbox{}%
+  \parfillskip=0pt\endgraf}}
+
+\newcommand{\problem}[2]{%
+    \vspace{-0.7em}
+    \hspace{0.02\textwidth}
+    \begin{minipage}[t][][b]{0.95\textwidth}
+        {\bf \hspace{-0.015\textwidth}\makebox[7.5em][l]{{#1} ~~\filltoend}}%
+        \hspace{1.2mm}{\it #2}%
+    \end{minipage}
+}
+
+\newcommand{\Tau}{\mathrm{T}}
+
+\lstset{ % Set the default style for code listings
+    numbers=left, 
+    numberstyle=\scriptsize, 
+    numbersep=8pt,
+    basicstyle=\scriptsize\ttfamily,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!70!black},
+    breaklines=true,
+    frame=single, 
+    language=C,
+    tabsize=4,
+    showstringspaces=false
+}
+
+% ========== Title page ==========
+
+\title{
+    \includegraphics[width=0.6\textwidth]{UU_logo.pdf}\\[1em]
+    Real Time System\\[3em]
+    Lab: Response Time Analysis using FpsCalc\\[1em]
+    Group 02    
+}
+
+\author{
+    Sagar Shubham\and
+    Arijeet Laga\and
+    Kedar Joshi\and
+    Aakash Goel
+}
+
+\newcommand{\subjectName}{Real Time Systems}
+\newcommand{\subjectCode}{1DT004-H18}
+\newcommand{\semesterValue}{Autumn 2018}
+\newcommand{\workType}{Lab $\#3$ Report}
+\newcommand{\groupName}{Group 02}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty} % Removes page number for front page
+\pagebreak
+
+
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead{}
+\fancyfoot{}
+
+\tableofcontents
+\pagebreak
+
+\fancyhead{}
+\fancyfoot{}
+\fancyfoot[R]{\large \thepage}
+\fancyfoot[L]{\large \groupName}
+\fancyhead[R]{\large \workType}
+\fancyhead[L]{\large \subjectName \ \subjectCode}
+\pagenumbering{roman}
+
+\listoffigures
+\addcontentsline{toc}{section}{\numberline{}List of Figures}
+\pagebreak
+
+% ========== Document contents ==========
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\section{{Quesion 1}}
+\begin{center}
+\begin{tabular}{| c | c c c |}
+\hline 
+ Task & $C_i$ & $T_i$ & $D_i$ \\
+ $\tau_1$ & $2$ ms& $10$ ms & $10$ ms \\
+ $\tau_2$ & $4$ ms& $15$ ms& $15$ ms\\
+ $\tau_3$ & $10$ms& $35$ ms& $35$ ms\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{\normalsize{Question 1.1}}
+\textit{\textbf{What is the priority ordering for the tasks using the RM priority ordering?}} \par
+Rate Monotonic Priority Ordering assigns Priorities to a task of a task set inversely proportional to its period.
+Which is to say, smaller the period of a task, higher its priority. \par
+Thus, for the given task set, the RM priority order is:
+$$ \tau_1 \prec \tau_2 \prec \tau_3  $$
+\pagebreak
+\subsection*{\normalsize{Question 1.2}}
+\textit{\textbf{Will all tasks complete before their deadlines according to the schedulability formula in Equation 2 on page 3? Draw a critical instant schedule for the given tasks (as in Figure 2, but have all tasks simultaneously released at time 0). What is the system utilization bound?}}\par
+
+As per formula for utilization,
+\begin{align*}
+& U = \sum_{i=1}^{n} \frac{C_i}{T_i}  \\ 
+& U = \frac{2}{10} + \frac{4}{15} + \frac{10}{35}\\
+& U = 0.7523810  \hfill\\
+\end{align*}
+On the other hand, the upper bound for Utilization is given by 
+\begin{align*}
+& U_{max,RM} = n(2^{1/n} - 1) \\
+& U_{max,RM} = 3\times(2^{1/3} - 1) \\
+& U_{max,RM} = 0.7797632 \\
+\end{align*}\par
+As $U \leq U_{max,RM}$, all the tasks will complete before their deadlines(As per Liu and Layland limited model).
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=3in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment1_2.png}
+                    \caption[Figure for Question 1.2]{Schedule for ($\tau_1$, $\tau_2$, $\tau_3$)}
+                    \label{figure1}        
+\end{figure}\par
+\pagebreak
+\subsection*{\normalsize{Question 1.3}}
+\textit{\textbf{Assume that we want to increase the computation time for task $\tau_1$ to be C1 = 4. Will all task complete before their deadlines? Draw a critical instant schedule for the given tasks. What is the system utilization bound?}}\par
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=3in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment1_3.png}
+                    \caption[Figure for Question 1.3]{Schedule for ($\tau_1$, $\tau_2$, $\tau_3$). Even when $U > U_{max,RM}$, deadline not missed.}
+                    \label{figure2}        
+\end{figure}\par
+Again, as per formula for utilization, 
+\begin{align*}
+& U = \sum_{i=1}^{n} \frac{C_i}{T_i}  \\ 
+& U = \frac{4}{10} + \frac{4}{15} + \frac{10}{35}\\
+& U = 0.9523810  \hfill\\
+\end{align*}
+On the other hand, the upper bound for Utilization is still same at $ U_{max,RM} = 0.7797632 $ .
+
+As $U_{max, RM} \leq U \leq 1$, we cannot confirm if the tasks will miss their deadline or not (As [$U \leq U_{max, RM}$] is a sufficient condition, but not a necessary condition). For example, we can see that from Figure \ref{figure2}, neither of the tasks miss their deadlines within the first $35 ms $. To check if this scheduling actually works, we need to extrapolate the above figure up to the hyperperiod of the $\Tau$, which is $L.C.M(10,15,35) = 210 ms$, and see if any deadline miss occurs.
+\pagebreak
+\subsection*{\normalsize{Question 1.4}}
+\textit{\textbf{Assume that we want to increase the computation time for task $\tau_1$ to be C1 = 5. Will all task complete before their deadlines? Draw a critical instant schedule for the given tasks. What is the system utilization bound?}}\par
+
+The Utilization now is 
+\begin{align*}
+& U = \sum_{i=1}^{n} \frac{C_i}{T_i}  \\ 
+& U = \frac{5}{10} + \frac{4}{15} + \frac{10}{35}\\
+& U = 1.0523810 \hfill\\
+\end{align*}
+As $U > 1.0$, the tasks will not be schedulable, and will miss their deadlines if attempted to be scheduled by Rate Monotonic Scheduling Algorithm on a uni-core, pre-emptive processor. One such instance is shown in Figure \ref{figure3} .
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=3in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment1_4.png}
+                    \caption[Figure for Question 1.4]{Schedule for ($\tau_1$, $\tau_2$, $\tau_3$), Deadline Missed for $\tau_3$ When $U > 1.0$}
+                    \label{figure3}        
+\end{figure}\par
+\pagebreak
+\subsection*{\normalsize{Question 1.5}}
+\textit{\textbf{Assume that we instead of modifying $\tau_1$1, (set C1 = 2), want to increase the computation time for task $\tau_3$ to be C3 = 17. Will all task complete before their deadlines? Draw a critical instant schedule for the given tasks. What is the system utilization bound?}}\par
+The Utilization now is 
+\begin{align*}
+& U = \sum_{i=1}^{n} \frac{C_i}{T_i}  \\ 
+& U = \frac{2}{10} + \frac{4}{15} + \frac{17}{35}\\
+& U = 0.9523810 \hfill\\
+\end{align*}
+As $U_{max,RM} \leq U \leq 1$ , we cannot confirm if the tasks will miss their deadline or not simply by checking Utilization. For example, unlike in case 1.3 , even though we have similar conditions, we will have deadline miss in this scenario, as depicted in Figure \ref{figure4}.
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=3in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment1_5.png}
+                    \caption[Figure for Question 1.5]{Schedule for ($\tau_1$, $\tau_2$, $\tau_3$), Deadline Missed for $\tau_3$, even though $U < 1.0$ }
+                    \label{figure4}        
+\end{figure}\par
+\pagebreak
+\subsection*{\normalsize{Question 1.6}}
+\textit{\textbf{What conclusion can you draw from all this for the schedulability formula in Equation 2 on page 3? Specify your conclusion in terms of the system utilization bound, the $n(2^{1/n} - 1)$ expression and $1.00$.}}\par
+
+ According to Liu and Layland (\textbf{Scheduling Algorithms for Multiprogramming in a Hard- Real-Time Environment, 1973}), the authors provided a analysis for schedulability of a Task set with implicit deadlines, which stated that for a Task Set $\Tau$, with n tasks which cannot be blocked and suspend themselves, the Utilization Bound is a sufficient condition to ensure safe schedulability of the task set. However, if the bound is crossed, that is, the system utilization by the tasks is greater than its Utilization Bound, nothing can be said about the schedulability of the task set $\Tau$.\par
+ Thus, we see in situation $1.2$ (Figure \ref{figure1}), that when Utilization was less than Utilization Bound, the system was perfectly schedulable. However, in situation $1.3$ (Figure \ref{figure2}), even though Utilization was greater than Utilization Bound, we still had a schedulable Task set. Then again, in situation 1.5 (Figure \ref{figure4}), the deadlines are missed for task $\tau_3$ when Utilization is greater than Utilization Bound.\par
+ However, there still does exist a hard upper bound for a Task set with implicit deadlines on a single processor, which is simply complete $100 \%$ utilization of the processor. If a Task set exceeds this utilization, it will definitely miss deadlines for some of its tasks, and hence will not be schedulable. This is visible in situation 1.4 (Figure \ref{figure3}), where $\tau_3$ missed its deadline.\par
+ Overall, we can summarize schedulability test by Utilization alone by the below formula (on a single processor with implicit deadline Tasks for RM Scheduling)
+ $$U = \sum_{i=1}^{n} \frac{C_i}{T_i} \ \ 
+\left\{
+    \begin{array}{ll}
+        \leq n(2^{1/n} - 1) & \mbox{Task set is schedulable.}  \\
+        > n(2^{1/n} - 1) \ \&\& \ \leq 1  & \mbox{May or may not be schedulable.} \\
+        > 1 & \mbox{Not schedulable.}
+    \end{array}
+\right.$$\par
+Thus, for the region $U_{max,RM} < U \leq 1 $, we need another analysis technique to confirm if our Task set is schedulable or not.
+\pagebreak
+\subsection*{\normalsize{Question 1.7}}
+\textit{\textbf{Insert the task set given in Figure 3 on page 3 in FpsCalc and calculate the response time of each task. What is the worst-case response time for each task using FpsCalc? Verify that the times correspond to the times you extracted using a critical instant schedule. In the worst case scenario, how many instances of $\tau_1$ and $\tau_2$ respectively can appear during one execution of $\tau_3$ ? How does this values relate to the $\ceil[\Big]{\frac{R_i}{T_j}}$ expression? How long time of the worst case response time of $\tau_3$ is spent waiting for instances of $\tau_1$ and $\tau_2$ respectively?}}\par
+From FpsCalc, we get the following values of response time for the Task set \par
+\begin{center}
+\begin{tabular}{| c | c |}
+\hline
+\textbf{$\tau_i$} & \textbf{$R_i$} \\
+\hline
+$\tau_1$ & $2 \ ms$ \\
+$\tau_2$ & $6 \ ms$ \\
+$\tau_3$ & $24 \ ms$ \\
+\hline
+\end{tabular}
+\end{center}\par
+Below is the screen capture Figure \ref{figure5} of FpsCalc Result (See Appendix \ref{Q1_7} for code listing). :\par
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=1.8in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment1_7.png}
+                    \caption[Figure for Question 1.7 Part 1]{Worst Case Response Time, $R_i$ for ($\tau_1$, $\tau_2$, $\tau_3$), as calculated from FpsCalc }
+                    \label{figure5}        
+\end{figure}
+\end{center}\par
+\pagebreak
+Again, observing Figure \ref{figure1}, we can see that the above calculated values match the worst case response time values for the Task set $\Tau$ on the first execution cycle for $\tau_1$, $\tau_2$, and $\tau_3$ (The worst case execution time for a periodic implicit deadlines task set will be achieved for all its task when all of them are released at same time, and in this case, at $t = 0$).\par
+Figure \ref{figure6} shows worst case response time, in accordance with situation 1.2, as in Figure \ref{figure1}.\par
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=3in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment1_7_2.png}
+                    \caption[Figure for Question 1.7 Part 2]{Worst Case Response Time, $R_i$ for ($\tau_1$, $\tau_2$, $\tau_3$), as observed from  Figure \ref{figure1}}
+                    \label{figure6}        
+\end{figure}
+\end{center}\par
+From the above Figure \ref{figure6}, we can see that during one execution instance of $\tau_3$, we have two instances of $\tau_2$ and three instances of $\tau_1$.\par
+The above values of number of occurances of $\tau_1$ and $\tau_2$ are equal to $\ceil[\Big]{\frac{R_i}{T_j}}$ term in calculation of $R_{\tau_3}$. The term signifies the number of times a higher priority task can preempt a lower priority task and finish with its worst case execution time. Thus, two occurances of $\tau_2$ adds two times its $C_2$ to $R_{\tau_3}$, while three occurances of $\tau_1$ adds three times its own $C_1$ to $R_{\tau_3}$. Thus, $R_{\tau_3}$ is made up of its own $C_3 = 10\ ms$, $3 \times C_1 = 3 \times 2 = 6\ ms$, and $2 \times C_2 = 2 \times 4 = 8\ ms$; Bringing $R_{\tau_3} = 10 + 6 + 8 = 24\ ms$.
+\pagebreak
+\section{Question 2}
+\begin{center}
+\begin{tabular}{| c | c c c |}
+\hline 
+ Task & $C_i$ & $T_i$ & $D_i$ \\
+ $\tau_1$ & $2\ ms$ & $ 20\ ms$ & $\ 6\ ms$  \\
+ $\tau_2$ & $3\ ms$& $\ \ 7\ ms$ & $\ 7\ ms$ \\
+ $\tau_3$ & $5\ ms$& $\ 14\ ms$ & $13\ ms$ \\
+ $\tau_4$ & $4\ ms$& $100\ ms$ & $60\ ms$ \\
+\hline
+\end{tabular}
+\end{center}
+\subsection*{\normalsize{Question 2.1}}
+\textit{\textbf{Given the task set in Figure 4 what is the priority ordering for the tasks using the DM priority ordering? What is the priority ordering using RM priority ordering? Use FpsCalc to calculate the response time for the tasks in both ordering. Will all tasks complete before their deadlines? If you are not convinced by the formulas you can do a critical instant schedule.
+}}\par
+Deadline Monotonic Priority Ordering applies priorities to tasks in a task set according to their relative deadline; A task with shorter deadline gets higher priority. Thus, for the given task set, the DM priority order is:
+$$ \tau_1 \prec \tau_2 \prec \tau_3 \prec \tau_4 $$\par
+On the other hand, if we hand out priorities according to Rate Monotonic Priority Ordering, we give higher priority to a task with shorter Period (or Rate). Thus, for the given task set, the RM priority order is:
+$$ \tau_2 \prec \tau_3 \prec \tau_1 \prec \tau_4  $$
+From FpsCalc, we get the following values of response time for the Task set for DM and RM priority ordering: \par
+\begin{center}
+\begin{tabular}{| c | c | c | c |}
+\hline
+\textbf{$\tau_i$} & \textbf{$D_i$} &     \textbf{$R_{i,\ RM}$} & \textbf{$R_{i,\ DM}$}\\
+\hline
+$\tau_1$ &  $\ \ 6\ ms$ & \textcolor{red}{$13 \ ms$} & $\ 2 \ ms$ \\
+$\tau_2$ &  $\ \ 7\ ms$ & $\ 3 \ ms$ & $\ 5 \ ms$ \\
+$\tau_3$ &  $\ 13\ ms$ & $11 \ ms$ & $13 \ ms$ \\
+$\tau_4$ &  $\ 60\ ms$ & $54 \ ms$ & $54 \ ms$ \\
+\hline
+\end{tabular}
+\end{center}\par
+\pagebreak
+Figure \ref{figure7} is the screen capture of FpsCalc Result(See Appendix \ref{Q2_1_DM_RM} for code listing).\par 
+%\begin{center}
+\begin{figure}
+\centering
+\begin{subfigure}{.525\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment2_1_DM.png}
+  \caption{WCRT with DM Priority Scheduling}
+  \label{figure2_1_DM}
+\end{subfigure}%
+\begin{subfigure}{.525\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment2_1_RM.png}
+  \caption{WCRT with RM Priority Scheduling}
+  \label{figure2_1_RM}
+\end{subfigure}
+\caption[Figure for Question 2.1]{DM and RM Priority WCRTs}
+\label{figure7}
+\end{figure}
+%\end{center}\par
+As we can see from the above results, with RM priority scheduling, $\tau_1$ will have a scenario when its response time will be greater than its deadline, thus missing it. This scenario does not occur with DM priority scheduling. Thus, the task set will not be schedulable by RM Priority scheduling, however, it is possible to schedule it with DM Priority Scheduling.
+\pagebreak 
+\subsection*{\normalsize{Question 2.2}}
+\textit{\textbf{Sometimes it is preferable to not use strict RM or DM priority assignment when giving priorities to tasks. This can, for example, happen when we want to give a task with low deadline demands a better service rate or when the system is part of a larger distributed system. \\
+Find two different priority assignments of the tasks in Figure 4 which are neither RM or DM and where deadlines are missed and met respectively.}}\par
+We set Priority Ordering as
+$$\tau_4 \prec \tau_3 \prec \tau_2\prec \tau_1$$\par
+Figure \ref{figure8} shows the WCRTs as calculated from FpsCalc (See Appendix \ref{Q2_2_U_S} for code listing).
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=1.8in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment2_2_U.png}
+                    \caption[Figure for Question 2.2 Deadline Missed Schedule]{WCRTs as per FpsCalc (Deadlines Missed)}
+                    \label{figure8}        
+\end{figure}
+\end{center}\par
+\pagebreak
+Now we set the Priority Ordering as
+$$\tau_2 \prec \tau_1 \prec \tau_3 \prec \tau_4$$\par
+This change brings the WCRTs as shown in Figure \ref{figure9} as calculated from FpsCalc (See Appendix \ref{Q2_2_U_S} for code listing).
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=1.8in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment2_2_S.png}
+                    \caption[Figure for Question 2.2 Deadline Not Missed Schedule]{WCRTs as per FpsCalc (Deadlines Not Missed)}
+                    \label{figure9}        
+\end{figure}
+\end{center}\par
+Summarizing, the above statements, the first priority ordering misses scheduled deadlines, while the second doesn't miss any deadlines, while neither are strictly RM or DM Priority Scheduling.
+\begin{center}
+\begin{tabular}{| c | c | c | c |}
+\hline
+\textbf{$\tau_i$} & \textbf{$D_i$} &    \textbf{$R_{i,\ Miss}$} & \textbf{$R_{i,\ No\ Miss}$}\\
+\hline
+$\tau_1$ &  $\ \ 6\ ms$ & \textcolor{red}{$28 \ ms$} & $\ 5 \ ms$ \\
+$\tau_2$ &  $\ \ 7\ ms$ & \textcolor{red}{$12 \ ms$} & $\ 3 \ ms$ \\
+$\tau_3$ &  $\ 13\ ms$ & $\ 9 \ ms$ & $13 \ ms$ \\
+$\tau_4$ &  $\ 60\ ms$ & $\ 4 \ ms$ & $54 \ ms$ \\
+\hline
+\end{tabular}
+\end{center}\par
+\pagebreak
+\subsection*{\normalsize{Question 2.3}}
+\textit{\textbf{Assume that we want to implement the tasks given in Figure 4 on a RT-kernel that only supports 3 priority levels and where tasks with the same priority will be handled in FIFO order by the scheduler. Assume that task $\tau_2$ and $\tau_3$ are set to have the same priority and that we use a DM priority assignment.\\
+Define how the response time formula in Equation 3 on page 4 will be changed when we allow several tasks to have the same priority. Make sure that it is shown in your formula that a task, due to the FIFO order, might have to wait for one instance, but can’t be preempted, of an equal priority task. How will the corresponding FpsCalc formula look like, (observe that sigma(ep, ...) includes the current task, $\tau_i$)?\\
+What will now the worst case response time for each task be? Will all tasks meet their deadlines? Will the worst case response time for task $\tau_1$ or $\tau_4$ be affected? Conclusions?}}\par
+The Worst Case Response time for a task \textit{$\tau_e$} with the given situations will occur when :
+\begin{enumerate}
+    \item All tasks with priority equal as that of \textit{$\tau_e$} (including \textit{$\tau_e$}), are released at the same time.
+    \item Task \textit{$\tau_e$} gets to be at the end of the FIFO, that is, all the other tasks with equal priority as that of \textit{$\tau_e$} are already in the FIFO waiting to be executed. \\
+    \item All the other tasks exhibit their own worst-case response time.
+    \item As tasks with equal priorities cannot preempt each other, a task in the equal priority task set can be blocked only once per execution by another task in the same set, thus being held from execution for a time equal to the worst-case execution time of the blocking equal priority task.
+\end{enumerate}\par
+From the above discussion, we can confirm that the response time $R_i$ of a task $\tau_i$ will be the sum of the following terms :
+\begin{itemize}
+    \item Preemption time by tasks with higher priority, with number of preemptions given by $\ceil[\Big]{\frac{R_i}{T_j}}$, where $T_j$ is the period of a higher priority task. Thus with worst case execution time of $C_j$ of each higher priority task, $\tau_i$ will be blocked for $\ceil[\Big]{\frac{R_i}{T_j}} * C_j$ time units for each such higher priority task. \\
+    \item Blocked by equal priority tasks with worst case execution time of $C_k$. In the worst case, when all equal priority tasks are ahead of $\tau_i$ in the FIFO, the worst case blocking time would be $\sum_{k \in ep(\tau_i)}C_k$ time units.
+\end{itemize}
+Thus the worst case response time formula for task $\tau_i$ would be given by 
+$$R_i = \sum_{k \in ep(\tau_i)}C_k + \sum_{j \in hp(\tau_i)}\ceil[\Big]{\frac{R_i}{T_j}}*C_j$$\par
+Figure \ref{fig2_3} shows the FpsCalc result(See Appendix \ref{Q2_3} for Code Listing) with the above formual for the task set, with priority order as
+$$\tau_1 \prec \tau_2 = \tau_3 \prec \tau_4  $$
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=1.75in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment2_3.png}
+                    \caption[Figure for Question 2.3]{WCRTs as per FpsCalc}
+                    \label{fig2_3}        
+\end{figure}
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{$\tau_i$} & \textbf{$D_i$} & \textbf{$R_i$} \\
+\hline
+$\tau_1$ & $\ 6\ ms$ & $\ 2\ ms$ \\
+$\tau_2$ & $\ 7\ ms$ & \color{red}{$10\ ms$} \\
+$\tau_3$ & $13\ ms$ & $10\ ms$ \\
+$\tau_4$ & $60\ ms$ & $54\ ms$ \\
+\hline
+\end{tabular}
+\end{center}\par
+As $\tau_2$ has its $R_i$ greater than its deadline $D_i$, $\tau_2$ will miss its deadline. \par
+
+We can see that $\tau_1$ and $\tau_4$ have the same worst-case response times as before with simple DM priority ordering with four different priorities. This is because, for $\tau_1$, all other tasks are still of lower priority than itself, hence it does not suffer any change in its response time because of change in their priority. Similarly, for $\tau_4$, all other tasks are still at a higher priority than itself and can and will preempt it as before, resulting in the same worst-case response time.
+\pagebreak
+
+\section{Question 3}
+\begin{center}
+\begin{tabular}{| c | c c c |}
+\hline 
+ Task & $C_i$ & $T_i$ & $D_i$ \\
+ \hline
+ $\tau_1$ & $\ 2\ ms$ & $\ 10\ ms$ & $\ 5\ ms$  \\
+ $\tau_2$ & $\ 3\ ms$& $\ 20\ ms$ & $12\ ms$ \\
+ $\tau_3$ & $10\ ms$& $\ 40\ ms$ & $40\ ms$ \\
+ $\tau_4$ & $\ 4\ ms$& $100\ ms$ & $50\ ms$ \\
+\hline
+\end{tabular}
+\end{center}\par
+\subsection*{\normalsize{Question 3.1}}
+\textit{\textbf{Assume that we have the tasks shown in Figure 6. Give priorities to the tasks according to the DM priority assignment. Will all tasks always meet their deadlines?}}\par
+As per DM Priority scheduling, priority order would be
+$$Priority(\tau_1) > Priority(\tau_2) > Priority(\tau_3) > Priority(\tau_4) $$
+As per FpsCalc, the WCRTs are as shown in screen capture in Figure \ref{fig3_1} (See Appendix \ref{Q3_1} for Code Listing) .
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=1.75in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment3_1.png}
+                    \caption[Figure for Question 3.1]{WCRTs as per FpsCalc}
+                    \label{fig3_1}        
+\end{figure}
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{$\tau_i$} & \textbf{$D_i$} & \textbf{$R_i$} \\
+\hline
+$\tau_1$ & $\ 5\ ms$ & $\ 2\ ms$ \\
+$\tau_2$ & $12 \ ms$ & $\ 5\ ms$ \\
+$\tau_3$ & $40\ ms$ & $17\ ms$ \\
+$\tau_4$ & $50\ ms$ & $26\ ms$ \\
+\hline
+\end{tabular}
+\end{center}\par
+As all response times are lesser than the deadlines for the respective tasks, the task set would be schedulable.
+\pagebreak
+\subsection*{\normalsize{Question 3.2}}
+\textbf{\textit{Assume that task $\tau_2$ and $\tau_4$ in Figure are sharing a semaphore $S1$ and that $\tau_2$ and $\tau_4$ executes for at most $1\ ms$ and $2\ ms$ respectively in the critical section. Show, by doing a critical instant scheme that the deadline for task $\tau_2$ can be missed if semaphores and no mechanism for limiting priority inversion (see below) is used. Tip: You might have to model that $\tau_4$ has taken the semaphore, just before the moment where you let all the other tasks start executing at the same time.
+}}\par
+From Figure \ref{fig3_2}, we can see that with no way to prevent priority inversion, $\tau_2$ can miss its deadline.
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=4in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment3_2.png}
+                    \caption[Figure for Question 3.2]{$\tau_2$ Missing Deadline Due to Unbounded Priority Inversion from task $\tau_3$}
+                    \label{fig3_2}        
+\end{figure}
+\end{center}\par
+\pagebreak
+\subsection*{\normalsize{Question 3.3}}
+\textit{\textbf{Assume that task $\tau_2$ not only is sharing a semaphore $S1$ with $\tau_4$ but also is sharing a semaphore $S2$ with task $\tau_3$ as given in Figure 7. Also assume that the times the task $\tau_2$ is accessing the semaphores $S1$ and $S2$ do not overlap. Show, by doing a critical instant scheme that deadline for task $\tau_2$ can be missed even though the priority inheritance protocol is used.}}\par
+From Figure \ref{fig3_3}, we can see that even with Basic Priority Inversion Protocol,, $\tau_2$ can miss its deadline.
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=4.5in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment3_3.png}
+                    \caption[Figure for Question 3.3]{$\tau_2$ Missing Deadline Due to Chained blocking of $\tau_2$ from $\tau_3$ and $\tau_4$}
+                    \label{fig3_3}        
+\end{figure}
+\end{center}\par
+\pagebreak
+\subsection*{\normalsize{Question 3.4}}
+\textit{\textbf{What are the blocking times for the tasks in Figure 6 using the priority inheritance protocol? Make sure that the amount of blocking corresponds to your drawn schedule. Tip: several tasks will experience blocking. What are the response times for the tasks when using the priority inheritance protocol?}}\par
+\begin{center}
+\begin{tabular}{| c | c | l |}
+\hline
+\textbf{$\tau_i$} & \textbf{$B_i$} \\
+\hline
+$\tau_1$ & $0\ ms$ \\
+$\tau_2$ & $7\ ms$ \\
+$\tau_3$ & $2\ ms$ \\
+$\tau_4$ & $0\ ms$ \\
+\hline
+\end{tabular}
+\end{center}\par
+As $\tau_1$ has no shared resources with any of the other tasks, its blocking time is $0\ ms$. Task $\tau_2$ uses both shared resources, and hence can get blocked by the sum of maximum times a lower priority (that $\tau_2$) locks the semaphore, which is, (sum of $cs_{\tau_3 , s_2} + cs_{\tau_4,s_1} = 5 + 2 =)\ 7\ ms$. Similarly, $\tau_3$ can be blocked as it can be made to do so when $\tau_4$ is executing with lock on $S_1$ and executing with priority of $\tau_2$. Thus, the blocking time for $\tau_3$ would be ($cs_{\tau_4,s_1} =)\ 2\ ms$. Task $\tau_4$ which is the lowest priority task, will not suffer from any blocking, and hence will have a blocking time of $0\ ms$.
+\pagebreak
+\subsection*{\normalsize{Question 3.5}}
+\textit{\textbf{What are the priority ceilings for the semaphores $S_1$ and $S_2$? What are the blocking times for the tasks in Figure 6 using the immediate inheritance protocol? Tip: several tasks will experience blocking. Explain why task $\tau_3$ can experience blocking even though it does not share any semaphore with $\tau_4$. Will all tasks complete before their deadlines?}}\par
+\begin{center}
+\begin{tabular}{| c | c | c | c |}
+\hline
+\textbf{Semaphore $S_i$} & \textbf{Task set shared by $S_i$} & \textbf{Highest Priority in Task Set} & \textbf{$Ceil(S)$}\\
+\hline
+$S_1$ & $\{\tau_2,\ \tau_4\}$ & $max(pri(\tau_2),\ pri(\tau_4)) = pri(\tau_2) = 2$ & $2$\\
+$S_2$ & $\{\tau_2,\ \tau_3\}$ & $max(pri(\tau_2),\ pri(\tau_3)) = pri(\tau_2) = 2$ & $2$\\
+\hline
+\end{tabular}
+\end{center}\par
+For the above table, we can see that both semaphores have a priority ceiling of 2. \par
+For calculating the Blocking times for the task set, we use the formula
+$$B_i = \underset{ \{\ k,s\ \vert\ k\ \in\ lp(i)\ \wedge\ s\ \in\ used\_by(k)\ \wedge\ ceil(s)\ \geq\ pri(i)\ \} }{max\ [cs_{k,s}]}$$
+Using the above formula, we calculate $B_i$ as per the below table.
+\begin{center}
+\begin{tabular}{| c | c | c | c | c | c | c |}
+\hline
+\textbf{$\tau_i$} & $P(\tau_i)$ &\textbf{\{$k$\}} & \textbf{\{$s$\}} & \textbf{\{$ceil(s)\ \geq\ pri(i)$\}} & \textbf{$\{cs_{k,s}$\}}& $B_i$ \\
+\hline
+$\tau_1$ & 1 & $\{ \tau_2, \tau_3, \tau_4\}$ & $\{S_{1,\ (CP = 2)},\ S_{2,\ (CP = 2)}\}$ & $\{\phi\}$ &$\{\phi\}$& $0\ ms$\\
+$\tau_2$ & 2 & $\{ \tau_3, \tau_4\}$ & $\{S_{1,\ (CP = 2)},\ S_{2,\ (CP = 2)}\}$ & $\{S_1,\ S_2\}$ &$\{2,\ 5\}$& $5\ ms$\\
+$\tau_3$ & 3 & $\{ \tau_4\}$ & $\{S_{1,\ (CP = 2)}\}$ & $\{S_1\}$ &$\{2\}$ & $2\ ms$\\
+$\tau_4$ & 4 & $\{ \phi \}$ & $\{ \phi \}$ & $\{ \phi \}$ & $\{ \phi \}$ & $0\ ms$\\
+\hline
+\end{tabular}
+\end{center}\par
+We see from above results, that $\tau_3$ suffers from a $2\ ms$ blocking time. This is because, it shares a resource($S_2$) with task $\tau_2$, which in turn shares another resource($S_1$) with task $\tau_4$. Thus it can happen, that $\tau_4$ can get a lock on $S_1$, and inherits the priority of $\tau_2$, preventing $\tau_3$ from execution. As the length of critical section for execution of $S_1$ by $\tau_4$ is $2\ ms$, thus, $\tau_3$ suffers from a $2\ ms$ blocking time.\par
+\pagebreak
+From FpsCalc, we have the following result for WCRTs as shown in Figure \ref{fig3_5} (See Appendix \ref{Q3_5} for Code Listing).
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=2in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment3_5.png}
+                    \caption[Figure for Question 3.5]{WCRTs as per FpsCalc}
+                    \label{fig3_5}        
+\end{figure}
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{$\tau_i$} & \textbf{$D_i$} & \textbf{$R_i$} \\
+\hline
+$\tau_1$ & $\ 5\ ms$ & $\ 2\ ms$ \\
+$\tau_2$ & $12 \ ms$ & $10\ ms$ \\
+$\tau_3$ & $40\ ms$ & $19\ ms$ \\
+$\tau_4$ & $50\ ms$ & $26\ ms$ \\
+\hline
+\end{tabular}
+
+\end{center}\par
+As all response times are lesser than the deadlines for the respective tasks, the task set would be schedulable.\par
+\pagebreak
+\section{Question 4}
+\subsection*{\normalsize{Question 4.1}}
+\textit{\textbf{Another source of jitter is varying execution and response times for tasks (or messages) that start other tasks. To illustrate this assume a system with two tasks $\tau_1$ and $\tau_2$. Let task $\tau_1$ have a period $T_1 = 10$ and a fixed (non-varying) execution time $C_1 = 3$. Let task $\tau_2$ arrives always $2$ time units after $\tau_1$ arrives, but it waits for $\tau_1$ finishing before it gets released (we can see it as that $\tau_2$ waits for the result of $\tau_1$ before it can execute). Assume task $\tau_1$ always ends its execution by releasing task $\tau_2$ ($\tau_2$ can now be scheduled for execution). Let $\tau_2$ have a worst case execution time of $C_2 = 2$. \\
+Draw a schedule that shows two instances of $\tau_1$ and $\tau_2$ respectively. What is the period $T_2$ of task $\tau_2$?}} \par
+Figure \ref{fig4_1} shows instances of $\tau_1$ and $\tau_2$.
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=2in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment4_1.png}
+                    \caption[Figure for Question 4.1]{Instance of $\tau_1$ and $\tau_2$}
+                    \label{fig4_1}        
+\end{figure}
+\end{center}\par
+As $\tau_2$ arrives after a constant time period from the arrival of $\tau_1$, hence the period of task $\tau_2$, $T_2$, is same as that of task $\tau_1$, that is, $10\ ms$.
+\pagebreak
+\subsection*{\normalsize{Question 4.2}}
+\textit{\textbf{To illustrate that varying execution time of $\tau_1$ might cause jitter of $\tau_2$ assume that $\tau_1$’s execution time no longer is fixed but varies between ${C_1}^{min} = 3$ and ${C_1}^{max} = 5$. Task $\tau_1$ still starts task $\tau_2$ at the end of its execution. \\
+Draw a schedule with two instances of $\tau_1$ that shows that the varying execution time of $\tau_1$ might
+give raise to jitter of $\tau_2$. What is the jitter that task $\tau_2$ can experience?}}\par
+Figure \ref{fig4_2} shows instances of $\tau_1$ and $\tau_2$.
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=3in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment4_2.png}
+                    \caption[Figure for Question 4.2]{Instance of $\tau_1$ and $\tau_2$}
+                    \label{fig4_2}        
+\end{figure}
+\end{center}\par
+The release jitter that can be suffered by $\tau_2$ is the difference between the earliest and the latest time $\tau_2$ can be released, with respect to its invocation time. Thus, from the Figure \ref{fig4_2}, we can see that the earliest $\tau_2$ is released is at $13\ ms$, while the latest release is at $15\ ms$. Therefore, the jitter is ($15 - 13 =\ )\ 2\ ms$. \par
+\pagebreak
+\subsection*{\normalsize{Question 4.3}}
+\textit{\textbf{To illustrate that interference of high priority tasks might give raise to further jitter of low priority tasks we add a task $\tau_0$ to the system. Let task $\tau_0$ have higher priority than both $\tau_1$ and $\tau_2$, a period $T_0 = 20$ and a worst case execution time $C_0 = 2$. \\
+Draw a schedule that shows that varying response time of $\tau_1$ due to interference of $\tau_0$ will give raise to further jitter of $\tau_2$ . Task $\tau_1$’s execution time still varies between ${C_1}^{min}$ and ${C_1}^{max}$. What is the jitter that $\tau_2$ can experience due to varying response and execution time of $\tau_1$?}}\par
+Figure \ref{fig4_3} shows instances of $\tau_0$, $\tau_1$, and $\tau_2$.
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=3in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment4_3.png}
+                    \caption[Figure for Question 4.3]{Instance of $\tau_0$, $\tau_1$, and $\tau_2$}
+                    \label{fig4_3}        
+\end{figure}
+\end{center}\par
+Due to introduction of higher priority task $\tau_0$, $\tau_2$ will now suffer greater maximum release Jitter, ${J_2}^{Biggest} = 5\ ms$(During the very first instance of schedule in Figure \ref{fig4_3}). This will change the release jitter again, which now becomes ($5 - 1 =)\ 4\ ms$ (as ${J_2}^{Smallest} = 1\ ms$ remains the same).
+\pagebreak
+\subsection*{\normalsize{Question 4.4}}
+\begin{center}
+\begin{tabular}{| c | c c c c |}
+\hline
+Task & $C_i$ & $T_i$ & $D_i$ & $J_i$ \\
+\hline
+$\tau_A$ & $\ 5\ ms$ & $20\ ms$ & $10\ ms$ & $\ 5\ ms$ \\
+$\tau_B$ & $30\ ms$ & $50\ ms$ & $50\ ms$ & $10\ ms$ \\
+\hline
+\end{tabular}
+\end{center}
+\textit{\textbf{For the given tasks $\tau_A$ and $\tau_B$ with DM priority ordering, what is the worst case response time for respective task assuming that we have no jitter. Will both tasks be able to complete before their deadlines?}}\par
+As per FpsCalc, when ignoring any jitter, we get the following WCRTs for $\tau_A$ and $\tau_B$ as shown in Figure \ref{fig4_4} (See Appendix \ref{Q4_4} for Code Listing).
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=1.5in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment4_4.png}
+                    \caption[Figure for Question 4.4]{WCRTs as per FpsCalc}
+                    \label{fig4_4}        
+\end{figure}
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{$\tau_i$} & \textbf{$D_i$} & \textbf{$R_i$} \\
+\hline
+$\tau_A$ & $10\ ms$ & $\ 5\ ms$ \\
+$\tau_B$ & $50 \ ms$ & $40\ ms$ \\
+\hline
+\end{tabular}
+\end{center}\par
+As we can see from above table, as both tasks have their $R_i$ less than their respective $D_i$, the tasks will complete before their deadlines.\par
+\pagebreak
+\subsection*{\normalsize{Question 4.5}}
+\textit{\textbf{Given the formula in Equation 5 what is the worst case response time for respective tasks assuming that they can experience jitter? Will both tasks be able to complete before their deadlines?}}\par
+As per FpsCalc, without ignoring jitter, we get the following $W_i$ and $R_i$ for $\tau_A$ and $\tau_B$ as shown in Figure \ref{fig4_5} (See Appendix \ref{Q4_5} for Code Listing).
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=1.8in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment4_5.png}
+                    \caption[Figure for Question 4.5]{WCRTs as per FpsCalc}
+                    \label{fig4_5}        
+\end{figure}
+\begin{tabular}{| c | c | c |}
+\hline
+\textbf{$\tau_i$} & \textbf{$D_i$} & \textbf{$R_i$} \\
+\hline
+$\tau_A$ & $10\ ms$ & $10\ ms$ \\
+$\tau_B$ & $50 \ ms$ & \color{red}{$55\ ms$} \\
+\hline
+\end{tabular}
+\end{center}\par
+As from the above data, we can see $\tau_A$ has its worst case response time lesser than its deadline, therefore it will not miss any deadlines. However, $\tau_B$ has a worst case response time of $55\ ms$, which is greater than its deadline of $50\ ms$. This will result in $\tau_B$ missing its deadline.\par
+\pagebreak
+\subsection*{\normalsize{Question 4.6}}
+\textit{\textbf{Draw a task schedule for the tasks $\tau_A$ and $\tau_B$ which gives the same worst case response times as the formula in Equation 5. Indicate arrival, jitter, beginning of execution, execution, preemption, and completion for each task in your schedule.}}\par
+Figure \ref{fig4_6} shows the task schedule for $\tau_A$ and $\tau_B$, with the later missing its deadline.
+\begin{center}
+\begin{figure}[H]
+                    \centering
+                    \includegraphics[height=3in]{/Users/sagarshubham/Desktop/TexFiles/RealTimeSystems/Lab3/Assignment4_6.png}
+                    \caption[Figure for Question 4.6]{Schedule for $\tau_A$ and $\tau_B$ with Jitter}
+                    \label{fig4_6}        
+\end{figure}
+\end{center}
+\pagebreak
+\section{Appendix}
+\subsection*{\normalsize{Code Listing for Question 1.7}}\label{Q1_7}
+\begin{lstlisting}
+system Assignment1_7 {
+
+  declarations {    
+    tasks t1, t2, t3;
+    indexed T,C,R,D,U;
+    priority P;
+  }
+
+  initialise {
+
+    ! Periods   
+    T[t1] = 10;
+    T[t2] = 15;
+    T[t3] = 35;
+    
+    ! WCETs
+    C[t1] = 2;
+    C[t2] = 4;
+    C[t3] = 10;
+
+    ! Deadlines (not used)
+    D[t1] = 10;
+    D[t2] = 15;
+    D[t3] = 35;
+
+    ! Priorities
+    P[t1] = 1;
+    P[t2] = 2;
+    P[t3] = 3;
+  }
+
+   formulas {  
+
+    ! Calculate the response-time for each task
+    R[i] = C[i] + sigma(hp, ceiling((R[i])/T[j]) * C[j]);
+  }
+}
+\end{lstlisting}
+\pagebreak
+\subsection*{\normalsize{Code Listing for Question 2.1, DM and RM Scheduling}}\label{Q2_1_DM_RM}
+\par
+DM Listing
+\begin{lstlisting}
+system Assignment2_1_DM {
+
+  declarations {    
+    tasks t1, t2, t3, t4;
+    indexed T,C,R,D,U;
+    priority P;
+  }
+
+  initialise {
+
+    ! Periods   
+    T[t1] = 20;
+    T[t2] = 7;
+    T[t3] = 14;
+    T[t4] = 100 ;
+    
+    ! WCETs
+    C[t1] = 2;
+    C[t2] = 3;
+    C[t3] = 5;
+    C[t4] = 4;
+
+    ! Deadlines
+    D[t1] = 6;
+    D[t2] = 7;
+    D[t3] = 13;
+    D[t4] = 60;
+
+    ! Priorities as per DM
+    P[t1] = 1;
+    P[t2] = 2;
+    P[t3] = 3;
+    P[t4] = 4;
+  }
+
+   formulas {  
+
+    ! Calculate the response-time for each task
+    R[i] = C[i] + sigma(hp, ceiling((R[i])/T[j]) * C[j]);
+  }
+}
+\end{lstlisting}
+RM Listing
+\begin{lstlisting}
+system Assignment2_1_RM {
+
+  declarations {    
+    tasks t1, t2, t3, t4;
+    indexed T,C,R,D,U;
+    priority P;
+  }
+
+  initialise {
+
+    ! Periods   
+    T[t1] = 20;
+    T[t2] = 7;
+    T[t3] = 14;
+    T[t4] = 100 ;
+    
+    ! WCETs
+    C[t1] = 2;
+    C[t2] = 3;
+    C[t3] = 5;
+    C[t4] = 4;
+
+    ! Deadlines
+    D[t1] = 6;
+    D[t2] = 7;
+    D[t3] = 13;
+    D[t4] = 60;
+
+    ! Priorities as per RM
+    P[t1] = 3;
+    P[t2] = 1;
+    P[t3] = 2;
+    P[t4] = 4;
+  }
+
+   formulas {  
+
+    ! Calculate the response-time for each task
+    R[i] = C[i] + sigma(hp, ceiling((R[i])/T[j]) * C[j]);
+  }
+}
+\end{lstlisting}
+\pagebreak
+\subsection*{\normalsize{Code Listing for Question 2.2, Unsuccessful and Successful Scheduling}}\label{Q2_2_U_S}
+Unsuccessful Scheduling
+\begin{lstlisting}
+system Assignment2_2_Unsuccessful {
+
+  declarations {    
+    tasks t1, t2, t3, t4;
+    indexed T,C,R,D,U;
+    priority P;
+  }
+
+  initialise {
+
+    ! Periods   
+    T[t1] = 20;
+    T[t2] = 7;
+    T[t3] = 14;
+    T[t4] = 100 ;
+    
+    ! WCETs
+    C[t1] = 2;
+    C[t2] = 3;
+    C[t3] = 5;
+    C[t4] = 4;
+
+    ! Deadlines
+    D[t1] = 6;
+    D[t2] = 7;
+    D[t3] = 13;
+    D[t4] = 60;
+
+    ! Priorities
+    P[t1] = 4;
+    P[t2] = 3;
+    P[t3] = 2;
+    P[t4] = 1;
+  }
+
+   formulas {  
+
+    ! Calculate the response-time for each task
+    R[i] = C[i] + sigma(hp, ceiling((R[i])/T[j]) * C[j]);
+  }
+}
+\end{lstlisting}
+Successful Scheduling
+\begin{lstlisting}
+system Assignment2_2_Successful {
+
+  declarations {    
+    tasks t1, t2, t3, t4;
+    indexed T,C,R,D,U;
+    priority P;
+  }
+
+  initialise {
+
+    ! Periods   
+    T[t1] = 20;
+    T[t2] = 7;
+    T[t3] = 14;
+    T[t4] = 100 ;
+    
+    ! WCETs
+    C[t1] = 2;
+    C[t2] = 3;
+    C[t3] = 5;
+    C[t4] = 4;
+
+    ! Deadlines
+    D[t1] = 6;
+    D[t2] = 7;
+    D[t3] = 13;
+    D[t4] = 60;
+
+    ! Priorities
+    P[t1] = 2;
+    P[t2] = 1;
+    P[t3] = 3;
+    P[t4] = 4;
+  }
+
+   formulas {  
+
+    ! Calculate the response-time for each task
+    R[i] = C[i] + sigma(hp, ceiling((R[i])/T[j]) * C[j]);
+  }
+}
+\end{lstlisting}
+\pagebreak
+\subsection*{\normalsize{Code Listing for Question 2.3}}\label{Q2_3}
+\begin{lstlisting}
+system Assignment2_3 {
+
+  declarations {    
+    tasks t1, t2, t3, t4;
+    indexed T,C,R,D,U;
+    priority P;
+  }
+
+  initialise {
+
+    ! Periods   
+    T[t1] = 20;
+    T[t2] = 7;
+    T[t3] = 14;
+    T[t4] = 100 ;
+    
+    ! WCETs
+    C[t1] = 2;
+    C[t2] = 3;
+    C[t3] = 5;
+    C[t4] = 4;
+
+    ! Deadlines
+    D[t1] = 6;
+    D[t2] = 7;
+    D[t3] = 13;
+    D[t4] = 60;
+
+    ! Priorities
+    P[t1] = 1;
+    P[t2] = 2;
+    P[t3] = 2;
+    P[t4] = 3;
+}
+
+   formulas {  
+
+    ! Calculate the response-time for each task
+    R[i] =sigma(ep,C[j]) + sigma(hp, ceiling(R[i]/T[j]) * C[j]);
+
+  }
+}
+\end{lstlisting}
+\pagebreak
+\subsection*{\normalsize{Code Listing for Question 3.1}}\label{Q3_1}
+\begin{lstlisting}
+system Assignment3_1 {
+
+  declarations {    
+    tasks t1, t2, t3, t4;
+    indexed T,C,R,D,U;
+    priority P;
+  }
+
+  initialise {
+
+    ! Periods   
+    T[t1] = 10;
+    T[t2] = 20;
+    T[t3] = 40;
+    T[t4] = 100 ;
+    
+    ! WCETs
+    C[t1] = 2;
+    C[t2] = 3;
+    C[t3] = 10;
+    C[t4] = 4;
+
+    ! Deadlines
+    D[t1] = 5;
+    D[t2] = 12;
+    D[t3] = 40;
+    D[t4] = 50;
+
+    ! Priorities
+    P[t1] = 1;
+    P[t2] = 2;
+    P[t3] = 3;
+    P[t4] = 4;
+}
+
+   formulas {  
+
+    ! Calculate the response-time for each task
+    R[i] = C[i] + sigma(hp, ceiling((R[i])/T[j]) * C[j]) ;
+  }
+}
+\end{lstlisting}
+\pagebreak
+\subsection*{\normalsize{Code Listing for Question 3.5}}\label{Q3_5}
+
+\begin{lstlisting}
+system Assignment3_5 {
+
+  declarations {    
+    tasks t1, t2, t3, t4;
+    indexed T,C,R,D,U,B;
+    priority P;
+  }
+
+  initialise {
+
+    ! Periods   
+    T[t1] = 10;
+    T[t2] = 20;
+    T[t3] = 40;
+    T[t4] = 100 ;
+    
+    ! WCETs
+    C[t1] = 2;
+    C[t2] = 3;
+    C[t3] = 10;
+    C[t4] = 4;
+
+    ! Deadlines
+    D[t1] = 5;
+    D[t2] = 12;
+    D[t3] = 40;
+    D[t4] = 50;
+
+    ! Priorities
+    P[t1] = 1;
+    P[t2] = 2;
+    P[t3] = 3;
+    P[t4] = 4;
+
+    ! Blocking times as calculated as per priority ceiling protocol
+    B[t1] = 0 ;
+    B[t2] = 5 ;
+    B[t3] = 2 ;
+    B[t4] = 0 ;
+}
+
+   formulas {  
+
+    ! Calculate the response-time for each task
+    R[i] = C[i] + B[i] + sigma(hp, ceiling((R[i])/T[j]) * C[j]) ;
+ }
+}
+\end{lstlisting}
+\pagebreak
+\subsection*{\normalsize{Code Listing for Question 4.4}}\label{Q4_4}
+\begin{lstlisting}
+system Assignment4_4 {
+
+  declarations {    
+    tasks tA, tB ;
+    indexed T,C,R,D;
+    priority P;
+  }
+
+  initialise {
+
+    ! Periods   
+    T[tA] = 20;
+    T[tB] = 50;
+    
+    ! WCETs
+    C[tA] = 5;
+    C[tB] = 30;
+
+    ! Deadlines
+    D[tA] = 10;
+    D[tB] = 50;
+
+    ! Priorities
+    P[tA] = 1;
+    P[tB] = 2;
+
+}
+
+   formulas {  
+
+    ! Calculate the response-time for each task
+    R[i] = C[i]  + sigma(hp, ceiling((R[i])/T[j]) * C[j]) ;
+
+  }
+}
+\end{lstlisting}
+\pagebreak
+\subsection*{\normalsize{Code Listing for Question 4.5}}\label{Q4_5}
+\begin{lstlisting}
+system Assignment4_4 {
+
+  declarations {    
+    tasks tA, tB ;
+    indexed T,C,R,D,J,W;
+    priority P;
+  }
+
+  initialise {
+
+    ! Periods   
+    T[tA] = 20;
+    T[tB] = 50;
+    
+    ! WCETs
+    C[tA] = 5;
+    C[tB] = 30;
+
+    ! Deadlines
+    D[tA] = 10;
+    D[tB] = 50;
+
+    ! Priorities
+    P[tA] = 1;
+    P[tB] = 2;
+
+   ! Jitter 
+   J[tA] = 5 ;
+   J[tB] = 10 ;
+
+}
+
+   formulas {  
+
+    ! Calculate the response-time for each task
+    W[i] = C[i]  + sigma(hp, (1 + ceiling((W[i] - (T[j] - J[j]) )/T[j])) * C[j]) ;
+    R[i] = W[i] + J[i] ;
+  }
+}
+\end{lstlisting}
+\end{document}
+

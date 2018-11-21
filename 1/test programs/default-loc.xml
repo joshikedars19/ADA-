@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<Locations >
+  <Project>
+    <vfs_file>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_file>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>C:\Users\joshi\Desktop\test</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>C:\Users\joshi\Desktop\test programs\programs\input_light.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project />
+      <vfs_file>C:\Users\joshi\Desktop\test</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 1" >
+      <vfs_project>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_project>
+      <vfs_file>C:\Users\joshi\Desktop\test programs\input_light.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 51" >
+      <vfs_project>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_project>
+      <vfs_file>C:\Users\joshi\Desktop\test programs\input_light.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 8" line=" 2" >
+      <vfs_project>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_project>
+      <vfs_file>C:\Users\joshi\Desktop\test programs\input_light.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 9" line=" 13" >
+      <vfs_project>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_project>
+      <vfs_file>C:\Users\joshi\Desktop\test programs\input_light.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 29" >
+      <vfs_project>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_project>
+      <vfs_file>C:\Users\joshi\Desktop\test programs\input_light.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 21" line=" 27" >
+      <vfs_project>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_project>
+      <vfs_file>C:\Users\joshi\Desktop\test programs\input_light.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 29" >
+      <vfs_project>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_project>
+      <vfs_file>C:\Users\joshi\Desktop\test programs\input_light.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 57" >
+      <vfs_project>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_project>
+      <vfs_file>C:\Users\joshi\Desktop\test programs\input_light.adb</vfs_file>
+    </file_marker>
+    <file_marker column=" 1" line=" 29" >
+      <vfs_project>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_project>
+      <vfs_file>C:\Users\joshi\Desktop\test programs\input_light.adb</vfs_file>
+    </file_marker>
+    <file_marker current="true" column=" 1" line=" 33" >
+      <vfs_project>C:\Users\joshi\Desktop\test programs\default.gpr</vfs_project>
+      <vfs_file>C:\Users\joshi\Desktop\test programs\input_light.adb</vfs_file>
+    </file_marker>
+  </Project>
+  <Project >
+    <vfs_file >C:\Users\joshi\Desktop\drivers\default.gpr</vfs_file>
+    <file_marker current="true" column=" 1" line=" 1">
+      <vfs_project  />
+      <vfs_file >C:\Users\joshi\Desktop\drivers\nxt-sound_sensors-ctors.adb</vfs_file>
+    </file_marker>
+  </Project>
+</Locations>
